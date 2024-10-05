@@ -34,3 +34,62 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+```
+npx create-next-app@latest –tsconfig
+
+
+npm install @tanstack/react-query
+npm i react-dropzone 
+
+
+
+AWS S3 Access libraries in node js
+
+npm i aws-sdk
+
+
+Neon Serverless Postgres
+
+npm install @neondatabase/serverless
+npm install drizzle-orm
+npm install drizzle-kit
+npx drizzle-kit push
+npx drizzle-kit studio 
+
+
+To access .env.local file other than src path
+        npm install dotenv
+
+
+To create file drop utility files
+
+        npm install react-dropzone
+
+Handle Mutation and Query from Local to Server endpoints
+npm install @tanstack/react-query
+
+npm install axios
+
+
+npm install @pinecone-database/pinecone
+
+npm i langchain
+
+npm i @langchain/community pdf-parse
+
+
+Pinecone Database
+npm i @pinecone-database/doc-splitter
+
+
+OpenAI 
+npm install openai-edge
+
+
+Hashing
+
+npm install md5
+npm install @types/md5
+
+```
