@@ -11,7 +11,8 @@ import { useRouter } from "next/navigation";
 const FileUpload = () => {
   const router = useRouter();
   const [uploading, setUploading] = React.useState(false);
-  const { mutate, isLoading } = useMutation({
+
+  const { mutate } = useMutation({
     mutationFn: async ({
       file_key,
       file_name,
@@ -33,7 +34,6 @@ const FileUpload = () => {
     onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file.size > 10 * 1024 * 1024) {
-        // bigger than 10mb!
         toast.error("File too large");
         return;
       }
@@ -41,14 +41,14 @@ const FileUpload = () => {
       try {
         setUploading(true);
         const data = await uploadToS3(file);
-        console.log("meow", data);
+
         if (!data?.file_key || !data.file_name) {
           toast.error("Something went wrong");
           return;
         }
+
         mutate(data, {
           onSuccess: ({ chat_id }) => {
-            console.log(data)
             toast.success("Chat created!");
             router.push(`/chat/${chat_id}`);
           },
@@ -64,6 +64,7 @@ const FileUpload = () => {
       }
     },
   });
+
   return (
     <div className="p-2 bg-white rounded-xl">
       <div
@@ -73,9 +74,8 @@ const FileUpload = () => {
         })}
       >
         <input {...getInputProps()} />
-        {uploading || isLoading ? (
+        {uploading ? (
           <>
-            {/* loading state */}
             <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
             <p className="mt-2 text-sm text-slate-400">
               Spilling Tea to GPT...

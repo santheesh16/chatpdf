@@ -47,7 +47,7 @@ export async function loadS3IntoPinecone(fileKey: string) {
     const pineconeIndex = client.Index('chatpdf-personal')
 
     console.log("Inserting vectors into Pinecone")
-    const resp = pineconeIndex.namespace(convertToAscii(fileKey)).upsert(vectors)
+    pineconeIndex.namespace(convertToAscii(fileKey)).upsert(vectors)
     return documents[0]    
 }
 
@@ -76,7 +76,9 @@ export const truncateStringByBytes = (str: string, bytes: number) => {
 };
 
 export async function prepareDocument(page: PDFPage): Promise<Document[]> {
-    let { pageContent, metadata } = page; // Keep 'let' for pageContent as it is reassigned below
+    let { pageContent } = page; // Only 'pageContent' is reassigned, so it remains 'let'
+    const { metadata } = page;  // 'metadata' is not reassigned, so change to 'const'
+
     pageContent = pageContent.replace(/\n/g, '');
 
     // Split the documents
@@ -85,7 +87,7 @@ export async function prepareDocument(page: PDFPage): Promise<Document[]> {
         new Document({
             pageContent,
             metadata: {
-                pageNumber: metadata.loc.pageNumber, // 'metadata' is now a 'const'
+                pageNumber: metadata.loc.pageNumber,
                 text: truncateStringByBytes(pageContent, 36000)
             }
         })
