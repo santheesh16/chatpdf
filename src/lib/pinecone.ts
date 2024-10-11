@@ -56,7 +56,6 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
 async function embedDocument(doc: Document, i : number) {
     try {
-        console.log(i+1)
         const embeddings = await getEmbeddings(doc.pageContent);
         const hash = md5(doc.pageContent);
 
