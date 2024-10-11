@@ -4,9 +4,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { Document, RecursiveCharacterTextSplitter } from '@pinecone-database/doc-splitter';
 import { getEmbeddings } from './embedding';
 import md5 from 'md5';
-import { Vector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch/data';
 import { convertToAscii } from './utils';
-import { vector } from 'drizzle-orm/pg-core';
 
 
 let pinecone: Pinecone | null = null;
@@ -14,7 +12,7 @@ let pinecone: Pinecone | null = null;
 export const getPineconeClient = async () => {
     if (!pinecone) {
         pinecone = new Pinecone({
-            apiKey: '76a6dcb3-4504-4412-a0a2-6d867c177ba0'
+            apiKey: process.env.PINECONE_API_KEY || ""
         });
     }
     return pinecone;
@@ -50,11 +48,10 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
     console.log("Inserting vectors into Pinecone")
     const resp = pineconeIndex.namespace(convertToAscii(fileKey)).upsert(vectors)
-    console.log("resp : " ,resp)
     return documents[0]    
 }
 
-async function embedDocument(doc: Document, i : number) {
+async function embedDocument(doc: Document) {
     try {
         const embeddings = await getEmbeddings(doc.pageContent);
         const hash = md5(doc.pageContent);
@@ -79,7 +76,7 @@ export const truncateStringByBytes = (str: string, bytes: number) => {
 };
 
 export async function prepareDocument(page: PDFPage): Promise<Document[]> {
-    let { pageContent, metadata } = page;
+    let { pageContent, metadata } = page; // Keep 'let' for pageContent as it is reassigned below
     pageContent = pageContent.replace(/\n/g, '');
 
     // Split the documents
@@ -88,7 +85,7 @@ export async function prepareDocument(page: PDFPage): Promise<Document[]> {
         new Document({
             pageContent,
             metadata: {
-                pageNumber: metadata.loc.pageNumber,
+                pageNumber: metadata.loc.pageNumber, // 'metadata' is now a 'const'
                 text: truncateStringByBytes(pageContent, 36000)
             }
         })

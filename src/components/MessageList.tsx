@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
 import { Message } from 'postcss'
 import React from 'react'
 
@@ -8,7 +7,7 @@ type Props = {
     messages: Message[]
 }
 
-const MessageList = ({messages, isLoading}: Props) => {
+const MessageList = ({messages}: Props) => {
   return(
     <div className="flex flex-col gap-2 px-4">
         {messages.map(message => {

@@ -26,7 +26,7 @@ export async function getContext(query: string, fileKey: string) {
     const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey);
 
     // Check if matches exists and is an array
-    const qualifyingDocs = Array.isArray(matches)
+const qualifyingDocs = Array.isArray(matches)
         ? matches.filter((match) => match.score && match.score > 0.7)
         : [];
 
@@ -34,6 +34,5 @@ export async function getContext(query: string, fileKey: string) {
         text : string,
         pageNumber: number
     }
-    let docs = qualifyingDocs.map(match => (match.metadata as Metadata).text)
-    return docs.join('\n').substring(0,3000)
+    return qualifyingDocs.map(match => (match.metadata as Metadata).text).join('\n').substring(0,3000)
 }

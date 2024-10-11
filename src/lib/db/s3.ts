@@ -1,6 +1,4 @@
 import AWS from 'aws-sdk'
-import { param } from 'drizzle-orm'
-import { date } from 'drizzle-orm/mysql-core'
 
 
 
@@ -36,7 +34,8 @@ export async function uploadToS3(file: File){
             file_name: file.name
         })
     }catch (error){
-        
+        console.log('Error uploading to S3', error); 
+        return error
     }
 }
 
